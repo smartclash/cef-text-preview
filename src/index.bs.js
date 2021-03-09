@@ -3,8 +3,10 @@
 
 var textArea = document.getElementById("textEditor");
 
+var previewArea = document.getElementById("textView");
+
 function handleTextAreaUpdate(param) {
-  console.log(textArea.value);
+  previewArea.innerText = textArea.value;
   
 }
 
@@ -12,6 +14,7 @@ textArea.addEventListener("keyup", handleTextAreaUpdate);
 
 export {
   textArea ,
+  previewArea ,
   handleTextAreaUpdate ,
   
 }

@@ -5,9 +5,10 @@ type keyboardEvent = {key: string, code: string}
 type fontSize = Small(string) | Regular(string) | Large(string)
 
 let textArea = document["getElementById"]("textEditor")
+let previewArea = document["getElementById"]("textView")
 
 let handleTextAreaUpdate = () => {
-    Js.log(textArea["value"])
+    previewArea["innerText"] = textArea["value"]
 }
 
 textArea["addEventListener"]("keyup", handleTextAreaUpdate)
