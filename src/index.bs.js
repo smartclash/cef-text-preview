@@ -16,27 +16,6 @@ var largeCheck = document.getElementById("selectLarge");
 
 var regularCheck = document.getElementById("selectRegular");
 
-function sizeSelection(text) {
-  var smallChecked = smallCheck.checked;
-  var regularChecked = regularCheck.checked;
-  if (smallChecked) {
-    return {
-            TAG: /* Small */0,
-            _0: text
-          };
-  } else if (regularChecked) {
-    return {
-            TAG: /* Regular */1,
-            _0: text
-          };
-  } else {
-    return {
-            TAG: /* Large */2,
-            _0: text
-          };
-  }
-}
-
 function removeSizeClass(param) {
   var classList = previewArea.classList;
   if (classList.length > 2) {
@@ -54,41 +33,57 @@ function updateClass(className) {
   return addSizeClass(className);
 }
 
-function handleUpdateClass(text) {
-  switch (text.TAG | 0) {
-    case /* Small */0 :
-        removeSizeClass(undefined);
-        addSizeClass("text-sm");
-        return text._0;
-    case /* Regular */1 :
-        removeSizeClass(undefined);
-        addSizeClass("text-2xl");
-        return text._0;
-    case /* Large */2 :
-        removeSizeClass(undefined);
-        addSizeClass("text-6xl");
-        return text._0;
-    
-  }
-}
-
-function updatePreviewText(text) {
-  previewArea.innerText = handleUpdateClass(text);
+function updatePreviewText(param) {
+  previewArea.innerText = theText.contents;
   
 }
 
-function handleTextAreaUpdate(param) {
+function handleTextAreaUpdate(size, param) {
   theText.contents = textArea.value;
-  return updatePreviewText(sizeSelection(theText.contents));
+  if (size !== undefined) {
+    switch (size) {
+      case /* Small */0 :
+          removeSizeClass(undefined);
+          addSizeClass("text-sm");
+          break;
+      case /* Regular */1 :
+          removeSizeClass(undefined);
+          addSizeClass("text-2xl");
+          break;
+      case /* Large */2 :
+          removeSizeClass(undefined);
+          addSizeClass("text-6xl");
+          break;
+      
+    }
+  } else {
+    removeSizeClass(undefined);
+    addSizeClass("text-2xl");
+  }
+  return updatePreviewText;
 }
 
-textArea.addEventListener("keyup", handleTextAreaUpdate);
+textArea.addEventListener("keyup", (function (param) {
+        return handleTextAreaUpdate(param, undefined);
+      }));
 
-smallCheck.addEventListener("click", handleTextAreaUpdate);
+var partial_arg = /* Small */0;
 
-largeCheck.addEventListener("click", handleTextAreaUpdate);
+smallCheck.addEventListener("click", (function (param) {
+        return handleTextAreaUpdate(partial_arg, param);
+      }));
 
-regularCheck.addEventListener("click", handleTextAreaUpdate);
+var partial_arg$1 = /* Large */2;
+
+largeCheck.addEventListener("click", (function (param) {
+        return handleTextAreaUpdate(partial_arg$1, param);
+      }));
+
+var partial_arg$2 = /* Regular */1;
+
+regularCheck.addEventListener("click", (function (param) {
+        return handleTextAreaUpdate(partial_arg$2, param);
+      }));
 
 export {
   theText ,
@@ -97,11 +92,9 @@ export {
   smallCheck ,
   largeCheck ,
   regularCheck ,
-  sizeSelection ,
   removeSizeClass ,
   addSizeClass ,
   updateClass ,
-  handleUpdateClass ,
   updatePreviewText ,
   handleTextAreaUpdate ,
   
